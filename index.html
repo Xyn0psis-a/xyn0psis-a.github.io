@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <meta name="description" content="Xyn0psis — gaming and story-driven video editor. Long-form, short-form, montages and sound design built for retention." />
+ <meta property="og:type" content="website" />
+ <meta property="og:title" content="Xyn0psis | Video Editor" />
+ <meta property="og:description" content="Gaming and story-driven edits built for retention." />
+ <meta property="og:image" content="og-preview.png" />
+ <meta property="og:image:alt" content="Xyn0psis — Gaming & Story-Driven Video Editor" />
+ <meta name="twitter:card" content="summary_large_image" />
+ <meta name="twitter:image" content="og-preview.png" />
+ <link rel="icon" type="image/png" href="favicon.png" />
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+ <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+ <title>Xyn0psis | Video Editor</title>
+ <style>
+
+ :root {
+ --bg: #050611;
+ --panel: rgba(20, 20, 34, .78);
+ --text: #eeeeef;
+ --muted: #aaa9b8;
+ --line: rgba(255,255,255,.14);
+ --line-soft: rgba(255,255,255,.07);
+ }
+
+ * { box-sizing: border-box; }
+ html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+
+ body {
+ margin: 0;
+ min-height: 100vh;
+ position: relative;
+ overflow-x: hidden;
+ background:
+ radial-gradient(ellipse 70% 35% at 18% 18%, rgba(111, 61, 190, .30), transparent 65%),
+ radial-gradient(ellipse 60% 38% at 82% 42%, rgba(40, 83, 190, .24), transparent 65%),
+ radial-gradient(ellipse 55% 28% at 50% 92%, rgba(133, 47, 155, .20), transparent 68%),
+ radial-gradient(ellipse 35% 22% at 58% 28%, rgba(255,255,255,.05), transparent 70%),
+ linear-gradient(180deg, #03040a 0%, #08091a 45%, #03040b 100%);
+ background-attachment: fixed;
+ color: var(--text);
+ font-family: "JetBrains Mono", monospace;
+ line-height: 1.7;
+ }
+
+ body::before, body::after {
+ content: "";
+ position: fixed;
+ inset: -20%;
+ pointer-events: none;
+ z-index: -1;
+ }
+
+ body::before {
+ opacity: .72;
+ background:
+ radial-gradient(circle, rgba(255,255,255,.95) 0 1px, transparent 1.7px),
+ radial-gradient(circle, rgba(167,202,255,.75) 0 .9px, transparent 1.6px),
+ radial-gradient(circle, rgba(255,255,255,.55) 0 .7px, transparent 1.4px);
+ background-size: 83px 91px, 137px 119px, 211px 173px;
+ background-position: 8px 21px, 46px 72px, 101px 17px;
+ animation: starDrift 70s linear infinite;
+ }
+
+ body::after {
+ opacity: .55;
+ background:
+ radial-gradient(ellipse 24% 7% at 24% 36%, rgba(117, 67, 195, .24), transparent 70%),
+ radial-gradient(ellipse 30% 8% at 74% 64%, rgba(45, 111, 210, .20), transparent 70%),
+ radial-gradient(ellipse 28% 6% at 57% 16%, rgba(206, 84, 185, .16), transparent 70%);
+ transform: rotate(-14deg) scale(1.2);
+ filter: blur(22px);
+ animation: nebulaFloat 24s ease-in-out infinite alternate;
+ }
+
+ @keyframes starDrift {
+ from { transform: translate3d(0,0,0); }
+ to { transform: translate3d(-35px, 22px, 0); }
+ }
+
+ @keyframes nebulaFloat {
+ from { transform: rotate(-14deg) scale(1.2) translate3d(-1%, -1%, 0); }
+ to { transform: rotate(-10deg) scale(1.28) translate3d(2%, 2%, 0); }
+ }
+ .page {
+ width: min(920px, calc(100% - 32px));
+ margin: 32px auto;
+ border: 1px solid var(--line);
+ border-radius: 34px;
+ overflow: hidden;
+ background: linear-gradient(180deg, rgba(8,9,19,.76), rgba(10,10,22,.68));
+ backdrop-filter: blur(7px);
+ box-shadow: 0 25px 80px rgba(0,0,0,.25);
+ }
+
+ .hero {
+ min-height: 720px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ padding: 72px 45px;
+ border-bottom: 1px solid var(--line);
+ }
+
+ .hero-layout {
+ width: min(1050px, 100%);
+ display: grid;
+ grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+ gap: 64px;
+ align-items: center;
+ }
+
+ .hero-inner { max-width: 700px; text-align: left; }
+
+ .services-panel {
+ border: 1px solid var(--line);
+ border-radius: 24px;
+ padding: 30px;
+ background: linear-gradient(180deg, rgba(20,20,34,.78), rgba(10,10,22,.62));
+ backdrop-filter: blur(10px);
+ box-shadow: 0 18px 55px rgba(0,0,0,.22);
+ }
+ .hero-actions {
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:10px;
+ margin-top:28px;
+ }
+ .section-button {
+ margin-top:0;
+ padding:10px 14px;
+ font-size:11px;
+ line-height:1.3;
+ text-align:center;
+ white-space:nowrap;
+ }
+ .hero-primary {
+ padding:11px 19px;
+ }
+ .services-panel h2 {
+ margin: 0 0 22px;
+ font-size: 21px;
+ font-weight: 500;
+ letter-spacing: .08em;
+ text-transform: uppercase;
+ }
+
+ .service-item {
+ padding: 17px 0;
+ border-top: 1px solid var(--line-soft);
+ }
+
+ .service-item:first-of-type { border-top: 0; padding-top: 0; }
+ .service-item:last-child { padding-bottom: 0; }
+
+ .service-item h3 {
+ margin: 0 0 4px;
+ font-size: 15px;
+ font-weight: 600;
+ }
+
+ .service-item p {
+ margin: 0;
+ color: var(--muted);
+ font-size: 13px;
+ line-height: 1.6;
+ }
+
+
+ .value-section {
+ padding: 70px 45px;
+ border-bottom: 1px solid var(--line);
+ }
+ .value-grid {
+ width: min(1050px, 100%);
+ margin: 0 auto;
+ display: grid;
+ grid-template-columns: 1.15fr .85fr;
+ gap: 46px;
+ align-items: start;
+ }
+ .strengths { display: grid; gap: 0; margin-top: 28px; }
+ .strength {
+ display: flex; gap: 15px; align-items: flex-start;
+ padding: 17px 0; border-top: 1px solid var(--line-soft);
+ }
+ .strength-icon { font-size: 12px; color: #c9c4ff; line-height: 2.2; width: 26px; flex: 0 0 26px; }
+ .strength h3 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+ .strength p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+ .framework-card {
+ border: 1px solid var(--line); border-radius: 24px; padding: 30px;
+ background: linear-gradient(180deg, rgba(20,20,34,.78), rgba(10,10,22,.62));
+ box-shadow: 0 18px 55px rgba(0,0,0,.18);
+ position: sticky; top: 24px;
+ }
+ .framework-label { color: var(--muted); font-size: 11px; letter-spacing: .14em; font-weight: 600; margin-bottom: 14px; }
+ .framework-card h2 { margin: 0 0 13px; font-size: clamp(22px, 3vw, 29px); font-weight: 500; letter-spacing: .01em; }
+ .framework-card > p { color: var(--muted); font-size: 13px; line-height: 1.65; margin: 0 0 25px; }
+ .framework-steps { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 10px; letter-spacing: .08em; font-weight: 700; }
+ .framework-steps span { padding: 8px 10px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.025); }
+ .framework-steps b { color: var(--muted); font-weight: 500; }
+
+
+
+ .avatar {
+ width: 170px;
+ height: 170px;
+ object-fit: cover;
+ border-radius: 50%;
+ border: 1px solid var(--line);
+ display: block;
+ margin: 0 0 30px;
+ }
+
+ h1 {
+ margin: 0;
+ font-size: clamp(27px, 4vw, 40px);
+ font-weight: 500;
+ letter-spacing: .08em;
+ }
+
+ .eyebrow {
+ color: var(--muted);
+ font-size: 18px;
+ margin: 26px 0 10px;
+ }
+
+ .intro {
+ color: var(--muted);
+ font-size: 16px;
+ max-width: 650px;
+ margin: 0;
+ }
+
+ .goal {
+ margin-top: 34px;
+ font-size: 15px;
+ letter-spacing: .05em;
+ }
+
+ section { padding: 78px 54px; }
+ .work { border-bottom: 1px solid var(--line); }
+
+ .section-title {
+ margin: 0 0 45px;
+ font-size: clamp(25px, 4vw, 34px);
+ font-weight: 400;
+ letter-spacing: .08em;
+ text-transform: uppercase;
+ }
+
+ .section-subtitle {
+ color: var(--muted);
+ margin: -28px 0 40px;
+ font-size: 14px;
+ }
+
+ .featured {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 22px;
+ margin-bottom: 58px;
+ }
+
+ .grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 22px;
+ }
+
+ .card {
+ border: 1px solid var(--line);
+ border-radius: 18px;
+ overflow: hidden;
+ background: var(--panel);
+ backdrop-filter: blur(8px);
+ cursor: pointer;
+ transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+ }
+
+ .card:hover {
+ transform: translateY(-5px);
+ border-color: rgba(255,255,255,.35);
+ box-shadow: 0 18px 35px rgba(0,0,0,.22);
+ }
+
+ .thumb-wrap {
+ position: relative;
+ aspect-ratio: 16 / 9;
+ overflow: hidden;
+ background: #18171b;
+ }
+
+ .thumb {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ display: block;
+ transition: transform .35s ease;
+ }
+
+ .card:hover .thumb { transform: scale(1.035); }
+
+ .play {
+ position: absolute;
+ left: 50%;
+ top: 50%;
+ transform: translate(-50%, -50%);
+ width: 58px;
+ height: 58px;
+ border-radius: 50%;
+ border: 1px solid rgba(255,255,255,.5);
+ background: rgba(20,19,23,.72);
+ display: grid;
+ place-items: center;
+ font-size: 20px;
+ backdrop-filter: blur(5px);
+ }
+
+ .featured .play { width: 66px; height: 66px; }
+
+ .external-work {
+ display: block;
+ color: inherit;
+ text-decoration: none;
+ }
+ .external-badge {
+ position: absolute;
+ right: 14px;
+ top: 14px;
+ width: 38px;
+ height: 38px;
+ border-radius: 50%;
+ border: 1px solid rgba(255,255,255,.5);
+ background: rgba(20,19,23,.72);
+ display: grid;
+ place-items: center;
+ font-size: 18px;
+ backdrop-filter: blur(5px);
+ }
+
+ .info { padding: 18px 20px 20px; }
+ .info h3 { margin: 0 0 5px; font-size: 16px; font-weight: 500; }
+ .info p { margin: 0; color: var(--muted); font-size: 12px; }
+
+ .channels {
+ border-bottom: 1px solid var(--line);
+ }
+
+ .channel-grid {
+ display: grid;
+ grid-template-columns: 1fr;
+ gap: 16px;
+ }
+
+ .channel-card {
+ display: grid;
+ grid-template-columns: 76px 1fr auto;
+ align-items: center;
+ gap: 18px;
+ padding: 15px 18px;
+ color: var(--text);
+ text-decoration: none;
+ border: 1px solid var(--line);
+ border-radius: 20px;
+ background: rgba(14, 15, 29, .68);
+ backdrop-filter: blur(10px);
+ transition: transform .25s ease, border-color .25s ease, background .25s ease;
+ }
+
+
+ .channel-initial {
+ width: 76px;
+ height: 76px;
+ border-radius: 18px;
+ display: grid;
+ place-items: center;
+ font-weight: 700;
+ font-size: 20px;
+ letter-spacing: -0.04em;
+ background: linear-gradient(135deg, rgba(175,158,255,.28), rgba(255,255,255,.06));
+ border: 1px solid rgba(175,158,255,.22);
+ }
+
+ .channel-card:hover {
+ transform: translateY(-4px);
+ border-color: rgba(175, 158, 255, .45);
+ background: rgba(22, 22, 42, .82);
+ }
+
+ .channel-card img {
+ width: 76px;
+ height: 76px;
+ object-fit: cover;
+ border-radius: 50%;
+ border: 1px solid rgba(255,255,255,.16);
+ box-shadow: 0 8px 25px rgba(0,0,0,.28);
+ }
+
+ .channel-card h3 {
+ margin: 0 0 3px;
+ font-size: 16px;
+ font-weight: 500;
+ }
+
+ .channel-card h3 span {
+ color: var(--muted);
+ font-size: 12px;
+ font-weight: 400;
+ margin-left: 6px;
+ }
+
+ .channel-card p {
+ margin: 0;
+ color: var(--muted);
+ font-size: 12px;
+ }
+
+ .channel-card b {
+ color: #c9c4ff;
+ font-size: 21px;
+ font-weight: 400;
+ }
+
+ .curated-channels {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 14px;
+ }
+ .contact .button {
+ appearance: none;
+ -webkit-appearance: none;
+ font: inherit;
+ color: var(--text);
+ background: transparent;
+ border: 1px solid var(--line);
+ cursor: pointer;
+ text-decoration: none;
+ }
+ .contact .button:hover {
+ background: rgba(255,255,255,.06);
+ border-color: rgba(255,255,255,.22);
+ }
+
+
+
+ .info-section {
+ padding: 78px 54px;
+ border-bottom: 1px solid var(--line);
+ }
+ .info-stack {
+ width: min(1050px, 100%);
+ margin: 0 auto;
+ display: grid;
+ gap: 20px;
+ }
+ .info-panel {
+ border: 1px solid var(--line);
+ border-radius: 24px;
+ padding: 30px 32px;
+ background: linear-gradient(180deg, rgba(20,20,34,.72), rgba(10,10,22,.50));
+ box-shadow: 0 18px 55px rgba(0,0,0,.15);
+ }
+ .info-heading { margin-bottom: 22px; }
+ .eyebrow-small {
+ color: var(--muted);
+ font-size: 10px;
+ letter-spacing: .16em;
+ text-transform: uppercase;
+ }
+ .info-panel h2 {
+ margin: 7px 0 0;
+ font-size: clamp(21px, 3vw, 29px);
+ font-weight: 500;
+ letter-spacing: .015em;
+ }
+ .about-body {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 22px;
+ }
+ .about-body p {
+ margin: 0;
+ color: var(--muted);
+ font-size: 13px;
+ line-height: 1.75;
+ }
+ .info-facts {
+ margin-top: 22px;
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 10px;
+ }
+ .mini-fact {
+ padding: 14px 16px;
+ border: 1px solid var(--line-soft);
+ border-radius: 14px;
+ background: rgba(255,255,255,.018);
+ }
+ .mini-fact span { display:block; color:var(--muted); font-size:9px; letter-spacing:.14em; margin-bottom:6px; }
+ .mini-fact strong { display:block; font-size:11px; font-weight:500; line-height:1.5; }
+ .achievement-link { color: inherit; text-decoration: none; border-bottom: 1px dotted rgba(255,255,255,.28); }
+ .achievement-link:hover { border-bottom-color: rgba(255,255,255,.65); }
+ .list-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 11px 18px;
+ }
+ .list-item {
+ padding: 13px 0;
+ border-top: 1px solid var(--line-soft);
+ display: grid;
+ gap: 4px;
+ }
+ .list-item b { font-size: 12px; font-weight:600; }
+ .list-item span { color:var(--muted); font-size:12px; line-height:1.6; }
+ .list-note {
+ grid-column: 1 / -1;
+ margin-top: 7px;
+ padding: 15px 17px;
+ border-left: 2px solid rgba(255,255,255,.22);
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.65;
+ }
+ .list-note strong { color:var(--text); }
+ .workflow-panel { padding-bottom: 34px; }
+ .workflow-grid {
+ display:grid;
+ grid-template-columns: repeat(4, 1fr);
+ gap: 10px;
+ }
+ .workflow-step {
+ min-height: 172px;
+ padding: 17px;
+ border: 1px solid var(--line-soft);
+ border-radius: 16px;
+ background: rgba(255,255,255,.018);
+ display:flex;
+ flex-direction:column;
+ }
+ .workflow-step > span { color:var(--muted); font-size:10px; letter-spacing:.12em; }
+ .workflow-step b { margin-top:12px; font-size:14px; font-weight:600; }
+ .workflow-step p { margin:7px 0 0; color:var(--muted); font-size:11px; line-height:1.6; }
+
+ .contact-details {
+ display: flex;
+ justify-content: center;
+ flex-wrap: wrap;
+ gap: 10px 22px;
+ margin: 22px 0 20px;
+ color: var(--muted);
+ font-size: 12px;
+ }
+ .contact-note {
+ margin: 16px 0 0;
+ color: var(--muted);
+ font-size: 11px;
+ }
+ .contact {
+ text-align: center;
+ padding: 78px 30px 90px;
+ }
+
+ .contact p { color: var(--muted); }
+ .buttons {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ gap: 12px;
+ margin-top: 28px;
+ }
+
+ .button {
+ display: inline-block;
+ color: var(--text);
+ border: 1px solid var(--line);
+ border-radius: 999px;
+ padding: 10px 18px;
+ text-decoration: none;
+ font-size: 13px;
+ transition: background .2s ease, border-color .2s ease;
+ }
+
+ .button:hover {
+ background: rgba(255,255,255,.07);
+ border-color: rgba(255,255,255,.3);
+ }
+
+ footer {
+ text-align: center;
+ color: #77757d;
+ font-size: 11px;
+ padding: 22px;
+ border-top: 1px solid var(--line-soft);
+ }
+
+ .modal {
+ position: fixed;
+ inset: 0;
+ z-index: 20;
+ background: rgba(8,8,10,.86);
+ backdrop-filter: blur(9px);
+ display: none;
+ align-items: center;
+ justify-content: center;
+ padding: 24px;
+ }
+
+ .modal.open { display: flex; }
+
+ .modal-box {
+ width: min(1000px, 100%);
+ position: relative;
+ }
+
+ .video-frame {
+ width: 100%;
+ aspect-ratio: 16 / 9;
+ border: 1px solid var(--line);
+ border-radius: 18px;
+ background: #000;
+ }
+
+ .close {
+ position: absolute;
+ right: -2px;
+ top: -48px;
+ color: white;
+ background: transparent;
+ border: 0;
+ font: inherit;
+ font-size: 28px;
+ cursor: pointer;
+ }
+
+ .cta { margin-top: 22px; background: rgba(175,158,255,.14); border-color: rgba(175,158,255,.4); }
+ .featured .lead { grid-column: 1 / -1; }
+ .featured .lead .info h3 { font-size: 19px; }
+ .badge { display: inline-block; margin-top: 10px; font-size: 11px; color: #c9c4ff; border: 1px solid rgba(175,158,255,.3); border-radius: 999px; padding: 2px 11px; }
+ .more-label { color: var(--muted); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; margin: 30px 0 0; }
+ .more-channels { justify-content: flex-start; margin-top: 14px; }
+ .card:focus-visible, .channel-card:focus-visible, .button:focus-visible { outline: 2px solid #c9c4ff; outline-offset: 3px; }
+ .video-frame.short { aspect-ratio: 9 / 16; width: auto; max-width: 100%; height: 86vh; display: block; margin: 0 auto; }
+ @media (prefers-reduced-motion: reduce) { body::before, body::after { animation: none; } }
+
+ @media (prefers-reduced-motion: reduce) {
+ html { scroll-behavior: auto; }
+ body::before, body::after { animation: none; }
+ .card, .button, .channel-card { transition: none; }
+ }
+
+ @media (max-width: 700px) {
+ .hero-actions { justify-content:center; }
+
+ .section-button {
+   flex:0 1 auto;
+ }
+
+ .curated-channels { grid-template-columns: 1fr; }
+
+ body::before, body::after { animation: none; }
+ .page { backdrop-filter: none; }
+ }
+
+ @media (max-width: 700px) {
+ .info-section { padding: 56px 22px; }
+ .about-body, .list-grid, .info-facts, .workflow-grid { grid-template-columns: 1fr; }
+ .workflow-step { min-height: auto; }
+ .page { width: calc(100% - 16px); margin: 8px auto; border-radius: 22px; }
+ .hero { min-height: auto; padding: 60px 22px; }
+
+ .value-section { padding: 56px 22px; }
+
+ .process-section { padding: 56px 22px; }
+ .process-grid { grid-template-columns: 1fr; }
+ .value-grid { grid-template-columns: 1fr; gap: 38px; }
+ .framework-card { position: static; }
+ .hero-layout { grid-template-columns: 1fr; gap: 42px; }
+ .hero-inner { max-width: none; }
+ .avatar { margin-left: auto; margin-right: auto; }
+ .hero-inner { text-align: center; }
+ .services-panel { text-align: left; }
+ .avatar { width: 145px; height: 145px; margin-bottom: 28px; }
+ .eyebrow { font-size: 15px; }
+ .intro { font-size: 13px; }
+ section { padding: 55px 18px; }
+ .featured, .grid { grid-template-columns: 1fr; }
+ .channel-card { grid-template-columns: 58px 1fr auto; gap: 13px; padding: 13px; }
+ .channel-card img { width: 58px; height: 58px; }
+ .channel-card h3 { font-size: 14px; }
+ .channel-card h3 span { display: block; margin: 2px 0 0; font-size: 11px; }
+ .section-title { margin-bottom: 34px; }
+ .close { right: 0; top: -40px; }
+ }
+
+ </style>
+</head>
+<body>
+ <main class="page">
+ <header class="hero">
+ <div class="hero-layout">
+ <div class="hero-inner">
+ <img class="avatar" src="profile.png" alt="Xyn0psis profile picture" />
+ <h1>Xyn0psis | Video Editor</h1>
+ <div class="eyebrow">Hey, I'm Xyn0psis.</div>
+ <p class="intro">
+ I edit gaming and story-driven YouTube videos: long-form, short-form,
+ montages and competitive FPS content, with tight pacing, sound design and a clear payoff.
+ </p>
+ <p class="goal">Gaming &amp; story-driven edits built for retention.</p>
+ <div class="hero-actions">
+ <a class="button cta hero-primary" href="#work">Watch my work ↓</a>
+ <a class="button cta section-button" href="#about">About Me ↓</a>
+ <a class="button cta section-button" href="#contact">Contact ↓</a>
+ </div>
+ </div>
+
+ <aside class="services-panel" aria-label="Editing services">
+ <h2>What I Can Edit</h2>
+
+ <div class="service-item">
+ <h3>Long-Form YouTube</h3>
+ <p>Storytelling, commentary, gaming &amp; documentary-style videos.</p>
+ </div>
+
+ <div class="service-item">
+ <h3>Short-Form Content</h3>
+ <p>YouTube Shorts, TikTok &amp; Reels built around pacing and retention.</p>
+ </div>
+
+ <div class="service-item">
+ <h3>Gaming Content</h3>
+ <p>Montages, highlights, gameplay &amp; competitive FPS content.</p>
+ </div>
+
+ <div class="service-item">
+ <h3>Story-Driven Editing</h3>
+ <p>Structure, visual assembly, pacing, music &amp; sound design built around the story.</p>
+ </div>
+ </aside>
+
+ 
+ </div>
+ </header>
+
+ <section class="work" id="work">
+ <h2 class="section-title">Selected Work</h2>
+ <p class="section-subtitle">Six selected projects across gaming, storytelling, sound design and visual editing.</p>
+
+ <div class="featured">
+ <article class="card lead" data-video="6O07WzUEKEc">
+ <div class="thumb-wrap">
+ <img class="thumb" src="https://img.youtube.com/vi/6O07WzUEKEc/maxresdefault.jpg" alt="Internet Trends full video with AI voiceover" loading="lazy" />
+ <div class="play">▶</div>
+ </div>
+ <div class="info">
+ <h3>Internet Trends That Are Actually Breaking Us</h3>
+ <p>Long-form · AI voiceover, visual assembly &amp; sound design</p>
+ </div>
+ </article>
+ <article class="card" data-video="hmsMCNf8A58">
+ <div class="thumb-wrap">
+ <img class="thumb" src="https://img.youtube.com/vi/hmsMCNf8A58/maxresdefault.jpg" alt="Gaming edit that reached 85K views" loading="lazy" />
+ <div class="play">▶</div>
+ </div>
+ <div class="info">
+ <h3>Gaming Edit · 85K Views</h3>
+ <p>Gaming · Full edit, pacing &amp; sound design</p><span class="badge">85K views</span>
+ </div>
+ </article>
+ <a class="card external-work" href="https://www.instagram.com/p/CVNGxkaFOs6/" target="_blank" rel="noopener" aria-label="Open Anijiken AMV competition entry on Instagram">
+ <div class="thumb-wrap">
+ <img class="thumb" src="anijiken-amv.webp" alt="Anijiken AMV competition entry" loading="lazy" />
+ <div class="external-badge">↗</div>
+ </div>
+ <div class="info">
+ <h3>Anijiken AMV Competition</h3>
+ <p>2nd Runner-Up · AMV / visual storytelling · 2021</p>
+ </div>
+ </a>
+ <article class="card" data-video="rMicZYNhfZU">
+ <div class="thumb-wrap">
+ <img class="thumb" src="https://img.youtube.com/vi/rMicZYNhfZU/maxresdefault.jpg" alt="Heavy edit that took 18 hours" loading="lazy" />
+ <div class="play">▶</div>
+ </div>
+ <div class="info">
+ <h3>Heavy Edit · 18 Hours of Work</h3>
+ <p>Detail-heavy · Layered timing &amp; polish</p>
+ </div>
+ </article>
+ <article class="card" data-video="xvCo5uISMT4">
+ <div class="thumb-wrap">
+ <img class="thumb" src="https://img.youtube.com/vi/xvCo5uISMT4/maxresdefault.jpg" alt="Voiceover and sound effects edit" loading="lazy" />
+ <div class="play">▶</div>
+ </div>
+ <div class="info">
+ <h3>Active Voice + SFX</h3>
+ <p>Voiceover, sound effects &amp; pacing</p>
+ </div>
+ </article>
+ <article class="card" data-video="vWXcZz1TYfg">
+ <div class="thumb-wrap">
+ <img class="thumb" src="https://img.youtube.com/vi/vWXcZz1TYfg/maxresdefault.jpg" alt="CS2 coaching journey from 3K to 15K Elo" loading="lazy" />
+ <div class="play">▶</div>
+ </div>
+ <div class="info">
+ <h3>3K → 15K Elo: CS2 Coaching</h3>
+ <p>Story-driven · Progression arc, teaching &amp; pacing</p>
+ </div>
+ </article>
+ </div>
+
+ <h2 class="section-title" style="font-size:24px;">More Work</h2>
+
+ <div class="grid">
+<article class="card" data-video="tFQ37nBa9Mo">
+ <div class="thumb-wrap">
+ <img class="thumb" src="https://img.youtube.com/vi/tFQ37nBa9Mo/maxresdefault.jpg" alt="Small montage" loading="lazy" />
+ <div class="play">▶</div>
+ </div>
+ <div class="info">
+ <h3>Small Montage</h3>
+ <p>Montage · Music-driven cuts &amp; pacing</p>
+ </div>
+ </article>
+<article class="card" data-video="BL6HCY_CkqQ">
+ <div class="thumb-wrap">
+ <img class="thumb" src="https://img.youtube.com/vi/BL6HCY_CkqQ/maxresdefault.jpg" alt="Minecraft funny gameplay" loading="lazy" />
+ <div class="play">▶</div>
+ </div>
+ <div class="info">
+ <h3>Minecraft Gameplay Funny</h3>
+ <p>Gameplay · Comedy timing</p>
+ </div>
+ </article>
+<article class="card" data-video="tyOwMhs2kvM" data-short="1">
+ <div class="thumb-wrap">
+ <img class="thumb" src="https://img.youtube.com/vi/tyOwMhs2kvM/maxresdefault.jpg" alt="AI voiceover short" loading="lazy" />
+ <div class="play">▶</div>
+ </div>
+ <div class="info">
+ <h3>AI Voiceover Short</h3>
+ <p>Short-form · AI voiceover &amp; captions</p>
+ </div>
+ </article>
+<article class="card" data-video="h71EeSzv-mw" data-short="1">
+ <div class="thumb-wrap">
+ <img class="thumb" src="https://img.youtube.com/vi/h71EeSzv-mw/maxresdefault.jpg" alt="Short-form edit" loading="lazy" />
+ <div class="play">▶</div>
+ </div>
+ <div class="info">
+ <h3>Short-Form Edit</h3>
+ <p>Short-form · Pacing &amp; retention</p>
+ </div>
+ </article>
+ </div>
+ </section>
+
+
+
+ <section class="value-section" id="approach">
+ <div class="value-grid">
+ <div>
+ <h2 class="section-title">Why Work With Me?</h2>
+ <p class="section-subtitle">I focus on making the edit serve the video—not just making it look busy.</p>
+ <div class="strengths">
+ <div class="strength">
+ <div class="strength-icon">01</div>
+ <div><h3>Retention-focused editing</h3><p>One of my gaming edits passed 85K views. I cut dead time and tighten pacing so viewers stay for the payoff.</p></div>
+ </div>
+ <div class="strength">
+ <div class="strength-icon">02</div>
+ <div><h3>Sound design</h3><p>SFX, music and voice layered so every beat lands. See Active Voice + SFX.</p></div>
+ </div>
+ <div class="strength">
+ <div class="strength-icon">03</div>
+ <div><h3>Story &amp; pacing</h3><p>Built around setup, tension and payoff, like the 3K → 15K CS2 coaching story.</p></div>
+ </div>
+ <div class="strength">
+ <div class="strength-icon">04</div>
+ <div><h3>Gaming-native editing</h3><p>I speak the language of competitive FPS, memes and clip culture.</p></div>
+ </div>
+ </div>
+ </div>
+
+ <div class="framework-card">
+ <div class="framework-label">MY EDITING APPROACH</div>
+ <h2>Hook → Problem → Solution → Payoff</h2>
+ <p>A simple storytelling framework I use to keep videos moving and give the viewer a reason to stay.</p>
+ <div class="framework-steps">
+ <span>HOOK</span><b>→</b><span>PROBLEM</span><b>→</b><span>SOLUTION</span><b>→</b><span>PAYOFF</span>
+ </div>
+ </div>
+ </div>
+ </section>
+
+
+
+ <section class="info-section" id="about">
+   <div class="info-stack">
+
+    <article class="info-panel about-panel">
+     <div class="info-heading">
+      <span class="eyebrow-small">ABOUT ME</span>
+      <h2>A designer's eye, applied to video.</h2>
+     </div>
+     <div class="info-body about-body">
+      <p>I come from an architectural background, with a <strong>Bachelor of Architecture from IIT Kharagpur</strong>. Architecture taught me to think about composition, visual hierarchy, space, aesthetics, and how individual elements work together to create an experience.</p>
+      <p>I bring that same mindset into video editing — combining <strong>pacing, visual storytelling, sound design, and motion</strong> to make gaming and storytelling content feel intentional rather than simply packed with effects.</p>
+     </div>
+     <div class="info-facts">
+      <div class="mini-fact"><span>BACKGROUND</span><strong>Architecture · IIT Kharagpur</strong></div>
+      <div class="mini-fact"><span>FOCUS</span><strong>Gaming · Storytelling · Short-form</strong></div>
+      <div class="mini-fact"><span>ACHIEVEMENT</span><strong><a class="achievement-link" href="https://www.instagram.com/p/CVNGxkaFOs6/" target="_blank" rel="noopener">2nd Runner-Up · Anijiken Competition (2021) ↗</a></strong></div>
+     </div>
+    </article>
+
+    <article class="info-panel" id="needs">
+     <div class="info-heading">
+      <span class="eyebrow-small">WHAT I NEED FROM YOU</span>
+      <h2>Give me the ingredients. I'll build the edit.</h2>
+     </div>
+     <div class="list-grid">
+      <div class="list-item"><b>Script / rough idea</b><span>What the video is about and what you want it to accomplish.</span></div>
+      <div class="list-item"><b>Direction</b><span>References, examples, or simply the style you're going for.</span></div>
+      <div class="list-item"><b>Raw footage &amp; assets</b><span>Gameplay, images, clips, logos, or anything else the edit needs.</span></div>
+      <div class="list-item"><b>Voiceover</b><span>Optional — send your own voiceover when the project calls for it.</span></div>
+      <div class="list-item"><b>Music</b><span>Optional — send your preference, or let me choose something appropriate.</span></div>
+      <div class="list-note"><strong>Don't have everything ready?</strong> Send me what you have. We can figure out the rest from there.</div>
+     </div>
+    </article>
+
+    <article class="info-panel" id="handles">
+     <div class="info-heading">
+      <span class="eyebrow-small">WHAT I HANDLE</span>
+      <h2>You focus on the content. I focus on the edit.</h2>
+     </div>
+     <div class="list-grid">
+      <div class="list-item"><b>Editing</b><span>Cuts, pacing and structure built around the video's goal.</span></div>
+      <div class="list-item"><b>Visuals</b><span>Captions, motion, zooms, emphasis and visual storytelling.</span></div>
+      <div class="list-item"><b>Sound design</b><span>SFX, music, audio transitions and timing that support each beat.</span></div>
+      <div class="list-item"><b>Retention</b><span>Hooks, progression and payoff where the story benefits from them.</span></div>
+      <div class="list-item"><b>Final delivery</b><span>A polished video ready for your channel.</span></div>
+      <div class="list-note"><strong>Have only an idea?</strong> That's fine. We can shape the production around it.</div>
+     </div>
+    </article>
+
+    <article class="info-panel workflow-panel" id="process">
+     <div class="info-heading">
+      <span class="eyebrow-small">WORKFLOW</span>
+      <h2>Simple process. Clear feedback. No mystery.</h2>
+     </div>
+     <div class="workflow-grid">
+      <div class="workflow-step"><span>01</span><b>Brief</b><p>We align on the idea, audience, references and desired outcome.</p></div>
+      <div class="workflow-step"><span>02</span><b>Edit</b><p>I shape the footage into a structured, paced and polished cut.</p></div>
+      <div class="workflow-step"><span>03</span><b>Feedback</b><p>You review the draft and tell me what needs changing.</p></div>
+      <div class="workflow-step"><span>04</span><b>Final delivery</b><p>Changes are applied and the finished video is ready to publish.</p></div>
+     </div>
+    </article>
+
+   </div>
+ </section>
+
+ <section class="channels" id="channels">
+ <h2 class="section-title">My Channels</h2>
+ <p class="section-subtitle">I also create and publish content across several gaming channels. These are the ones most relevant to my editing work.</p>
+
+ <div class="channel-grid curated-channels">
+ <a class="channel-card" href="https://www.youtube.com/@NightCS" target="_blank" rel="noopener">
+ <img src="nightcs.png" alt="Nightfury channel avatar" />
+ <div>
+ <h3>Nightfury <span>@NightCS</span></h3>
+ <p>Edited gaming videos &amp; finished content</p>
+ </div>
+ <b>↗</b>
+ </a>
+
+ <a class="channel-card" href="https://www.youtube.com/@Xyn0_CS" target="_blank" rel="noopener">
+ <img src="xynocs.png" alt="Xyn0CS channel avatar" />
+ <div>
+ <h3>Xyn0CS <span>@Xyn0_CS</span></h3>
+ <p>Competitive FPS &amp; CS2 content</p>
+ </div>
+ <b>↗</b>
+ </a>
+
+ <a class="channel-card" href="https://www.youtube.com/@Water_MV" target="_blank" rel="noopener">
+ <img src="watermv.png" alt="WaterMV channel avatar" />
+ <div>
+ <h3>WaterMV <span>@Water_MV</span></h3>
+ <p>Variety gaming &amp; edited content</p>
+ </div>
+ <b>↗</b>
+ </a>
+
+ <a class="channel-card" href="https://www.youtube.com/@xyn0psis.a812" target="_blank" rel="noopener">
+ <img src="xynopsis_a812.png" alt="Xyn0psis.a channel avatar" />
+ <div>
+ <h3>Xyn0psis.a <span>@xyn0psis.a812</span></h3>
+ <p>Personal gaming &amp; creator projects</p>
+ </div>
+ <b>↗</b>
+ </a>
+ </div>
+
+ <p class="more-label">Other projects</p>
+ <div class="buttons more-channels">
+ <a class="button" href="https://www.youtube.com/@ExitCaliber" target="_blank" rel="noopener">Exit Caliber</a>
+ <a class="button" href="https://www.youtube.com/@Xyno_Playz" target="_blank" rel="noopener">Xyno Playz</a>
+ <a class="button" href="https://www.youtube.com/@stillloadingonline" target="_blank" rel="noopener">Still Loading</a>
+ </div>
+ </section>
+
+ <section class="contact" id="contact">
+ <h2 class="section-title">Let's Work Together</h2>
+ <p>Have a project in mind? Send me the details and let's talk.</p>
+ <div class="contact-details">
+ <span>senabaya18@gmail.com</span>
+ <span>Discord · @Xyn0psis</span>
+ </div>
+ <div class="buttons">
+ <a class="button" href="mailto:senabaya18@gmail.com?subject=Video%20Editing%20Inquiry" aria-label="Email Xyn0psis">Email Me</a>
+ <button class="button" id="discordCopy" type="button">Copy Discord</button>
+ </div>
+ <p class="contact-note">Rates: DM for a quote · Turnaround depends on the scope and complexity of the edit.</p>
+ </section>
+
+ <footer>© 2026 Xyn0psis · Video Editor</footer>
+ </main>
+
+ <div class="modal" id="modal" aria-hidden="true">
+ <div class="modal-box">
+ <button class="close" id="close" aria-label="Close video">×</button>
+ <iframe
+ id="player"
+ class="video-frame"
+ src=""
+ title="YouTube video player"
+ frameborder="0"
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+ allowfullscreen>
+ </iframe>
+ </div>
+ </div>
+
+ <script>
+ const modal = document.getElementById("modal");
+ const player = document.getElementById("player");
+ const close = document.getElementById("close");
+ let lastTrigger = null;
+
+ const fixThumb = img => {
+   if (!img.dataset.fb && img.src.includes("maxresdefault")) {
+     img.dataset.fb = 1;
+     img.src = img.src.replace("maxresdefault", "hqdefault");
+   }
+ };
+ document.querySelectorAll(".thumb").forEach(img => {
+   img.addEventListener("error", () => fixThumb(img));
+   img.addEventListener("load", () => { if (img.naturalWidth && img.naturalWidth < 200) fixThumb(img); });
+   if (img.complete && img.naturalWidth && img.naturalWidth < 200) fixThumb(img);
+ });
+
+ const videoCards = document.querySelectorAll(".card[data-video]");
+ videoCards.forEach(card => {
+   card.tabIndex = 0;
+   card.setAttribute("role", "button");
+   const openVideo = () => {
+     lastTrigger = card;
+     const isShort = card.dataset.short === "1";
+     player.classList.toggle("short", isShort);
+     const id = card.dataset.video;
+     player.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+     modal.classList.add("open");
+     modal.setAttribute("aria-hidden", "false");
+     document.body.style.overflow = "hidden";
+     close.focus();
+   };
+   card.addEventListener("click", openVideo);
+   card.addEventListener("keydown", e => {
+     if (e.key === "Enter" || e.key === " ") {
+       e.preventDefault();
+       openVideo();
+     }
+   });
+ });
+
+ function closeModal() {
+   modal.classList.remove("open");
+   modal.setAttribute("aria-hidden", "true");
+   player.src = "";
+   player.classList.remove("short");
+   document.body.style.overflow = "";
+   if (lastTrigger) lastTrigger.focus();
+ }
+ close.addEventListener("click", closeModal);
+ modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+ document.addEventListener("keydown", e => { if (e.key === "Escape" && modal.classList.contains("open")) closeModal(); });
+
+ const discordCopy = document.getElementById("discordCopy");
+ discordCopy.addEventListener("click", async () => {
+   const original = discordCopy.textContent;
+   try {
+     await navigator.clipboard.writeText("@Xyn0psis");
+     discordCopy.textContent = "Discord Copied ✓";
+   } catch {
+     discordCopy.textContent = "@Xyn0psis";
+   }
+   setTimeout(() => { discordCopy.textContent = original; }, 1800);
+ });
+ </script>
+</body>
+</html>
